@@ -22,9 +22,15 @@
             id="StackOverflow.Search.Editor"
             class="PopUpAction"
             text="Search on Stack Overflow"
-            description="Search on Stack Overflow">
+            description="Find Question">
       <add-to-group group-id="EditorPopupMenu" anchor="last"/>
     </action>
+    <group id="org.intellij.sdk.action.GroupedActions" text="ComPlugin" popup="true">
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
+      <action class="PopUpAction" id="org.intellij.sdk.action.GroupPopDialogAction"
+              text="FindQuestions" description="SDK static grouped action example">
+      </action>
+    </group>
   </actions>
 
 </idea-plugin>

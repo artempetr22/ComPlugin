@@ -16,6 +16,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.*;
 import com.intellij.openapi.roots.impl.ModuleRootManagerComponent;
 import com.intellij.openapi.roots.impl.ModuleRootManagerImpl;
+import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiFile;
@@ -39,6 +40,26 @@ public class PopUpAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
+        //todo update user github id to configs
+
+        project = e.getData(CommonDataKeys.PROJECT);
+        final Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
+        final Document document = editor.getDocument();
+
+        QAWrapper qaWrapper = new QAWrapper(project, true);
+
+        ArrayList<QA> qas = new ArrayList<>();
+        doGetQasFromDocument(document, qas);
+        qaWrapper.setQas(qas);
+        qaWrapper.setEvent(e);
+        qaWrapper.setFilename(e.getRequiredData(CommonDataKeys.VIRTUAL_FILE).getName());
+
+
+        qaWrapper.init();
+        qaWrapper.showAndGet();
+    }
+
+    public void actionPerformed1(@NotNull AnActionEvent e) {
         project = e.getData(CommonDataKeys.PROJECT);
         String path = project.getBasePath();
 
@@ -86,20 +107,21 @@ public class PopUpAction extends AnAction {
 
     private void doWriteAnswerToDocument(Document document, QA qa){
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            document.replaceString(qa.getIndex(), qa.getIndex(), "//@Answer " + qa.getAnswer() + "\n");
+            document.replaceString(qa.getIndex(), qa.getIndex(), "//@answer " + qa.getAnswer() + "\n");
         });
     }
 
+    //@question
     private void doGetQasFromDocument(Document document, ArrayList<QA> qas){
         String documentText = document.getText();
 
         int from = 0;
         while (documentText.indexOf(Configs.QUESTION_TAG, from) >= 0){
             int start = documentText.indexOf(Configs.QUESTION_TAG, from);
-            int end = documentText.indexOf("?", start) + 2;
-            String question = documentText.substring(start, end);
+            int end = documentText.indexOf("\n", start) + 1;
+            String question = documentText.substring(start + 11, end);
 
-            qas.add(new QA(question, end, document));
+            if (!documentText.substring(end, end + 10).contains("nswe")) qas.add(new QA(question, end, document, project));
             from = end;
         }
     }

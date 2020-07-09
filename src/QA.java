@@ -1,16 +1,27 @@
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.project.Project;
 
 public class QA {
     private String question;
     private String answer;
     private int index;
     private Document document;
+    private Project project;
 
-    public QA(String question, int index, Document document) {
+    public QA(String question, int index, Document document, Project project) {
         this.question = question;
         this.index = index;
         this.document = document;
         this.answer = "idk";
+        this.project = project;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public String getQuestion() {

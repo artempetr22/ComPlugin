@@ -2,7 +2,7 @@
   <id>com.your.company.unique.plugin.id</id>
   <name>ComPlugin</name>
   <version>1.0</version>
-  <vendor email="ilya@pidoras.com" url="ilya.pidoras.me">Ilya.pidoras</vendor>
+  <vendor email="ilya@ya.com" url="ilya.ilya.me">Ilya.ilya</vendor>
 
   <description>This plugin allowes you to ask and answer questions about code through intellij idea</description>
 
@@ -22,9 +22,15 @@
             id="StackOverflow.Search.Editor"
             class="PopUpAction"
             text="Search on Stack Overflow"
-            description="Search on Stack Overflow">
+            description="Find Question">
       <add-to-group group-id="EditorPopupMenu" anchor="last"/>
     </action>
+    <group id="org.intellij.sdk.action.GroupedActions" text="ComPlugin" popup="true">
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
+      <action class="PopUpAction" id="org.intellij.sdk.action.GroupPopDialogAction"
+              text="FindQuestions" description="SDK static grouped action example">
+      </action>
+    </group>
   </actions>
 
 </idea-plugin>
